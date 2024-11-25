@@ -1,0 +1,37 @@
+FUNCIONALIDADES:
+
+    Cadastrar um prontuário;
+    Atualizar um prontuário;
+    Buscar um prontuário;
+    Buscar prontuário pelo paciente;
+    Buscar prontuário por 
+    Remover um prontuário;
+    
+
+TABELAS BANCO DE DADOS:
+
+    DADOS CADASTRAIS DO PACIENTE:
+        ID paciente;
+        Nome;
+        Idade;
+        Cidade;
+        Data de nascimento;
+        Familiar responsável;
+        Contato - familiar;
+        Parentesco - Familiar;
+
+    DADOS DO PROCEDIMENTO:
+        ID procedimento;
+        Leito;
+        Procedimento;
+        Status do procedimento;
+        Condição do paciente;
+        Médico responsável;
+        Descrição do caso;
+        Medicamentos;
+        Dosagem;
+        Periodicidade;
+        Data do procedimento;
+
+        
+
