@@ -1,10 +1,22 @@
 export type Report = {
+    id: string,
     name: string,
-    firts_name: string,
+    first_name: string,
     age: string,
     city: string,
     sex: string,
     birth: Date,
     cpf: string,
-    mother_name: string
-}
+    mother_name: string,
+    relative_name: string,
+    relative_first_name: string,
+    familiar_stand: string,
+    phone: string,
+    record_code: string,
+    procedure: string,
+    bed: string,
+    procedure_status: string,
+    doctor_name: string,
+    doctor_first_name: string,
+    procedure_date: string
+    }   

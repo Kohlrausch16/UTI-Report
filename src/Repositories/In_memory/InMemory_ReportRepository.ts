@@ -9,17 +9,46 @@ class ReportRepository{
         this.dataBase = [];
     }
 
+
+    async getReports(): Promise <Report[]> {
+        return this.dataBase
+    }
+
+
+    async getReportByCode(code: String): Promise <Report | String> {
+        const data: Report | undefined = this.dataBase.find((value) =>{
+            return value.record_code === code; 
+        });
+
+        if(data !== undefined){
+            return data
+        } return `Não foi possível encontrar o código ${code}`;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     async addReport(reportData: Report){
         const verify = this.dataBase.filter((dado) =>{
-            return dado.cpf === reportData.cpf           
+            return dado.record_code === reportData.record_code           
             });
             
           if(verify.length > 0){
-                console.log('Deu errado');
-                return 'Este CPF já existe na base de dados!';
+                return `O código de prontuário ${verify[0].record_code} já existe na base de dados!`;
             } else {
                 this.dataBase.push(reportData);
-                console.log('Deu certo');
             }
        
         

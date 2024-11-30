@@ -5,9 +5,9 @@ const router = Router();
 
 const reportController = new ReportController;
 
-router.get('/report');
-router.get('/report/:id');
-router.get('/report/:codigo');
+router.get('/report', reportController.getReports);
+//router.get('/report/:id');    => É realmente necessário? A busca pode ser feita via código
+router.get('/report/:codigo', reportController.getReportByCode);
 router.post('/report', reportController.addReport);
 router.put('/report/:id');
 router.delete('/report/:id');
