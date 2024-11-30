@@ -4,10 +4,9 @@ FUNCIONALIDADES:
     Atualizar um prontuário;
     Buscar um prontuário;
     Buscar prontuário pelo paciente;
-    Buscar prontuário por 
+    Buscar prontuário por código;
     Remover um prontuário;
     
-
 TABELAS BANCO DE DADOS:
 
     DADOS CADASTRAIS DO PACIENTE:
@@ -15,23 +14,28 @@ TABELAS BANCO DE DADOS:
         Nome;
         Idade;
         Cidade;
+	    Sexo;
         Data de nascimento;
-        Familiar responsável;
+	    CPF; 
+	    Nome da mãe;
+
+    DADOS ACOMPANHANTE RESPONSÁVEL:
+        Familiar acompanhante;
         Contato - familiar;
         Parentesco - Familiar;
 
     DADOS DO PROCEDIMENTO:
-        ID procedimento;
+        ID prontuário;
+        Código identificador;
         Leito;
         Procedimento;
         Status do procedimento;
         Condição do paciente;
         Médico responsável;
         Descrição do caso;
-        Medicamentos;
+        Medicamento;
         Dosagem;
         Periodicidade;
         Data do procedimento;
-
         
 
