@@ -15,14 +15,16 @@ class ReportRepository{
     }
 
 
-    async getReportByCode(code: String): Promise <Report | String> {
-        const data: Report | undefined = this.dataBase.find((value) =>{
-            return value.record_code === code; 
+    async getReportByCode(code: String): Promise <Report | string> {
+        const data: Report [] = this.dataBase.filter((valor) =>{
+            return valor.record_code === code;
         });
 
-        if(data !== undefined){
-            return data
-        } return `Não foi possível encontrar o código ${code}`;
+        if (data.length > 0){
+            return data[0];
+        } else {
+            return `Não foi possível encontrar o código ${code}`
+        }
     }
 
 

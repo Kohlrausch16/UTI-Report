@@ -18,12 +18,12 @@ class ReportService{
 
 
 
-    async getReportByCode(code: String): Promise <Report | String> {
-        const data: Report| String = await reportRepository.getReportByCode(code);
-        return data
+    async getReportByCode(code: string): Promise <Report | String> {
+
+        const foundData = await reportRepository.getReportByCode(code);
+        return foundData;
+
     }
-
-
 
 
 
