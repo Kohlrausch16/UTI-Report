@@ -2,7 +2,7 @@ EM DESENVOLVIMENTO - UTI-Report
 
 A UTI-Report consiste em API destinada para o gerenciamento de prontuários de pacientes em UTI.
 
-O projeto tem como objetivo a fixação de conteitos como rotas, requisições tratamento de requisições HTTP, realização de operações de CRUD, implementação de um sistema de autenticação de usuários, implementação de Helpers e Middlewares, proteção de rotas e conexão com bancos relacionais my SQL.
+O projeto tem como objetivo a fixação de conteitos como rotas, tratamento de requisições HTTP, realização de operações de CRUD, implementação de um sistema de autenticação de usuários, implementação de Helpers e Middlewares, proteção de rotas e conexão com bancos relacionais MySQL.
 
 Além disto, o projeto oportuniza a utilização de bibliotecas JS, tais como implementação de UUIDs, CORS, validações Yup, tokens JWT, criptografia de dados, etc.
 
