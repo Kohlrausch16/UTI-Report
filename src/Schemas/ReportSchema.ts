@@ -26,3 +26,4 @@ export const reportDataSchema = object().shape({
     doctor_first_name: string().required(),
     procedure_date: string().required()
 });
+

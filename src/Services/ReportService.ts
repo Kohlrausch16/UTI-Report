@@ -16,12 +16,29 @@ class ReportService{
         return (data);
     }
 
-
-
     async getReportByCode(code: string): Promise <Report | String> {
-
         const foundData = await reportRepository.getReportByCode(code);
         return foundData;
+
+    }
+
+    async addReport(reportData: Report): Promise <Report | string>{
+        const id = uuidv4();
+        reportData.id = id;
+        const addedData = await reportRepository.addReport(reportData);
+        return addedData;   
+    }
+
+
+
+
+
+
+
+    async updateReport(data: Report, id: string): Promise <Report | string>{
+
+        const updatedReport: Report | string= await reportRepository.updateReport(data, id);
+        return updatedReport;
 
     }
 
@@ -39,16 +56,9 @@ class ReportService{
 
 
 
-
-
-
-
-
-    async addReport(reportData: Report){
-        const id = uuidv4();
-        reportData.id = id;
-        const addedData = await reportRepository.addReport(reportData);
-        return addedData;   
+    async deleteReport(id: string): Promise <String>{
+        const deletedReport: String = await reportRepository.deleteReport(id);
+        return deletedReport;
     }
 
 }
