@@ -43,23 +43,13 @@ class ReportRepository {
       return reportData;
     }
 
-
-
-
-
-
-
-
-
-
-
-
     async updateReport(data: Report, id: string): Promise <Report | string>{
 
       const index: number = await this.getReportById(id);
 
       if(index != -1){
         this.dataBase[index] = data;
+        this.dataBase[index].id = id;
         return this.dataBase[index];
 
       } else {
@@ -69,7 +59,6 @@ class ReportRepository {
 
     async deleteReport(id: string): Promise <String> {
       const index = await this.getReportById(id);
-      console.log(this.dataBase[index].id);
       if(index != -1){
         delete this.dataBase[index];
         return `Registro deletado`

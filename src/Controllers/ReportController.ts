@@ -11,13 +11,13 @@ class ReportController {
   async getReports(req: Request, res: Response): Promise <void>{
     try {
       const data: Report[] = await reportService.getReports();
-      if (data.length > 0) {
+      if (data.length >= 0) {
         res.status(200).json(data);
       } else {
         res.status(404).json({erro: "Não existem dados na base"});
       }
     } catch (error) {
-      res.status(400).json({error: error});
+      res.status(400).json({error: "Não foi possível encontrar o regitro"});
     }
   }
 
@@ -28,7 +28,7 @@ class ReportController {
       res.status(200).json(foundData);
 
     } catch (error){
-      res.status(400).json({"erro": error});
+      res.status(400).json({error: "Não foi possível encontrar o regitro"});
     }
   }
 
@@ -37,24 +37,11 @@ class ReportController {
     try {
       await reportDataSchema.validate(reportData);
       const addedData = await reportService.addReport(reportData);
-      res.status(200).json({ success: addedData });
+      res.status(200).json(addedData);
     } catch (error) {
-      res.status(400).json({erro: error});
+      res.status(400).json({error: "Não foi possível adicionar o regitro"});
     }
   }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
   async updateReport(req: Request, res: Response): Promise <void>{
     const data: Report = req.body
@@ -65,24 +52,9 @@ class ReportController {
       const updatedReport: Report | string = await reportService.updateReport(data, id);
       res.status(200).json(updatedReport);
     } catch (error: any) {
-        res.status(400).json({"error": error.message});
+        res.status(400).json({error: "Não foi possível atualizar o regitro"});
     }
   }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
   async deleteReport(req: Request, res: Response): Promise <void>{
@@ -93,7 +65,7 @@ class ReportController {
       res.status(200).json(deletedReport);
 
     } catch (error: any){
-      res.status(400).json({"erro": error.message})
+      res.status(400).json({error: "Não foi possível deletar o regitro"})
     }
 
   }

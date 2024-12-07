@@ -30,31 +30,12 @@ class ReportService{
     }
 
 
-
-
-
-
-
     async updateReport(data: Report, id: string): Promise <Report | string>{
 
         const updatedReport: Report | string= await reportRepository.updateReport(data, id);
         return updatedReport;
 
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     async deleteReport(id: string): Promise <String>{
         const deletedReport: String = await reportRepository.deleteReport(id);
