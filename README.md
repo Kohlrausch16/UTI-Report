@@ -1,3 +1,13 @@
 EM DESENVOLVIMENTO - UTI-Report
 
 API destinada para o gerenciamento de prontuários de pacientes em UTI.
+
+Planejamento de desenvolvimento:
+
+1 - **Criação de rotas: ** Etapa de criação de rotas responsáveis por realizar operações de CRUD dos relatórios - Em desenvolvimento...
+
+2 - **Gerador de prontuário: ** Etapa de implementação de um funcionalidade responsável por gerar um PDF do prontuário, o qual será disponibilizado para download - Em desenvolvimento...
+
+3 - **Autenticação e autorização: **Implementação de middlewares responsáveis pela autenticação e controle de permissões de usuários - Em desenvolvimento...
+
+4 - **Conexão com banco: ** Etapa de conexão da API com banco de dados MySQL - Em desenvolvimento...
