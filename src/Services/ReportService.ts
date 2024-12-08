@@ -16,7 +16,7 @@ class ReportService{
         return (data);
     }
 
-    async getReportByCode(code: string): Promise <Report | String> {
+    async getReportByCode(code: string): Promise <Report | string> {
         const foundData = await reportRepository.getReportByCode(code);
         return foundData;
 

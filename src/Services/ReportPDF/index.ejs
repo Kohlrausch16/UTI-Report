@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= first_name%><%= name%>_Prontuário</title>
+    <link rel="stylesheet" href="./pdfStyle.css">
+</head>
+<body>
+
+    <h1> Pontuário Médico &nbsp &nbsp <%= report_code%></h1>
+    <hr>
+    <div class="personal_data">
+        <h5> Dados pessoais </h5>
+        <p>Nome: <%= first_name%></p>
+        <p>Sobrenome: <%= name%></p>
+        <p>Idade: <%= age%></p>
+        <p>Cidade: <%= city%></p>
+        <p>Sexo: <%= sex%></p>
+        <p>Nascimento: <%= birth%></p>
+        <p>CPF: <%= cpf%></p>
+        <p>Nome da mãe: <%= mother_name%></p> 
+    </div>
+
+    <hr>
+
+    <div class="relative_data">
+        <h5> Familar Responsável </h5>
+        <p>Familiar: <%= relative_first_name%> <%= relative_name%></p>
+        <p>Parentesco: <%= familiar_stand%></p>
+        <p>Contato:  <%= phone%></p>      
+    </div>
+
+    <hr>
+
+    <div class="procedure_data">
+        <h5> Procediemento </h5>
+        <p>Procedimento: <%= procedure%></p>
+        <p>Data do procedimento: <%= procedure_date%></p>
+        <p>Leito: <%= bed%></p>
+        <p>Status do procedimento: <%= procedure_status%></p>       
+    </div>
+
+    <hr>
+   
+    <div class="doctor_data">
+        <h5> Médico Responsável </h5>
+        <p>Nome: <%= doctor_first_name%> <%= doctor_name%></p>     
+        
+    </div>
+    
+    <hr>
+    
+</body>
+</html>

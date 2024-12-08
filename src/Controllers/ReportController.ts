@@ -6,11 +6,10 @@ import { reportDataSchema} from "../Schemas/ReportSchema";
 const reportService = new ReportService();
 
 class ReportController {
-  constructor() {}
 
   async getReports(req: Request, res: Response): Promise <void>{
     try {
-      const data: Report[] = await reportService.getReports();
+            const data: Report[] = await reportService.getReports();
       if (data.length >= 0) {
         res.status(200).json(data);
       } else {
@@ -35,7 +34,7 @@ class ReportController {
   async addReport(req: Request, res: Response): Promise <void>{
     const reportData: Report = req.body;
     try {
-      await reportDataSchema.validate(reportData);
+      await reportDataSchema.validate(reportData, {stripUnknown: true});
       const addedData = await reportService.addReport(reportData);
       res.status(200).json(addedData);
     } catch (error) {

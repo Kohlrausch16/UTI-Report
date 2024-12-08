@@ -18,7 +18,7 @@ export const reportDataSchema = object().shape({
     relative_first_name: string().required(),
     familiar_stand: string().required(),
     phone: string().length(11).required(),
-    record_code: string().length(12).required(),
+    report_code: string().length(12).required(),
     procedure: string().required(),
     bed: string().required(),
     procedure_status: string().nullable(),

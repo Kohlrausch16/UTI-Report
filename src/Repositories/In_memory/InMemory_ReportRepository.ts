@@ -13,7 +13,7 @@ class ReportRepository {
 
     async getReportByCode(code: String): Promise<Report | string> {
       const data: Report[] = this.dataBase.filter((valor) => {
-        return valor.record_code === code;
+        return valor.report_code === code;
       });
 
       if (data.length > 0) {
@@ -31,11 +31,11 @@ class ReportRepository {
 
     async addReport(reportData: Report): Promise<Report | string> {
       const verify = this.dataBase.filter((dado) => {
-        return dado.record_code === reportData.record_code;
+        return dado.report_code === reportData.report_code;
       });
 
       if (verify.length > 0) {
-        return `O código de prontuário ${verify[0].record_code} já existe na base de dados!`;
+        return `O código de prontuário ${verify[0].report_code} já existe na base de dados!`;
       } else {
         this.dataBase.push(reportData);
       }

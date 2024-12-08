@@ -12,7 +12,7 @@ export type Report = {
     relative_first_name: string,
     familiar_stand: string,
     phone: string,
-    record_code: string,
+    report_code: string,
     procedure: string,
     bed: string,
     procedure_status: string,
