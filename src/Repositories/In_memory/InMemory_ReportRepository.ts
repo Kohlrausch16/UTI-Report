@@ -11,59 +11,58 @@ class ReportRepository {
       return this.dataBase;
     }
 
-    async getReportByCode(code: String): Promise<Report | string> {
+    async getReportByCode(code: String): Promise<Report> {
       const data: Report[] = this.dataBase.filter((valor) => {
-        return valor.report_code === code;
+        return valor.procedure_data.report_code === code;
       });
 
-      if (data.length > 0) {
-        return data[0];
-      } else {
-        return `Não foi possível encontrar o código ${code}`;
-      }
+      if (data.length <= 0) {
+        throw new Error (`Não foi possível encontrar o código ${code}`);
+      }  
+      return data[0];
+    
     }
 
     async getReportById(id: string): Promise <number>{
       return this.dataBase.findIndex((valor) =>{
-        return valor.id === id
+        return valor.procedure_data.report_id === id
       });
     }
 
-    async addReport(reportData: Report): Promise<Report | string> {
+    async addReport(reportData: Report): Promise<Report> {
       const verify = this.dataBase.filter((dado) => {
-        return dado.report_code === reportData.report_code;
+        return dado.procedure_data.report_code === reportData.procedure_data.report_code;
       });
 
       if (verify.length > 0) {
-        return `O código de prontuário ${verify[0].report_code} já existe na base de dados!`;
-      } else {
-        this.dataBase.push(reportData);
-      }
+        throw new Error (`O código de prontuário ${verify[0].procedure_data.report_code} já existe na base de dados!`);
+      } 
 
+      this.dataBase.push(reportData);
       return reportData;
     }
 
-    async updateReport(data: Report, id: string): Promise <Report | string>{
+    async updateReport(data: Report, id: string): Promise <Report>{
 
       const index: number = await this.getReportById(id);
 
-      if(index != -1){
-        this.dataBase[index] = data;
-        this.dataBase[index].id = id;
-        return this.dataBase[index];
-
-      } else {
-        return `Não foi possível encontrar o prontuário com ID ${id}`
+      if(index == -1){
+        throw new Error(`Não foi possível encontrar o prontuário com ID ${id}`);
       }
+
+      this.dataBase[index] = data;
+      this.dataBase[index].procedure_data.report_id = id;
+      return this.dataBase[index];
     }
 
-    async deleteReport(id: string): Promise <String> {
+    async deleteReport(id: string): Promise <string> {
       const index = await this.getReportById(id);
-      if(index != -1){
-        delete this.dataBase[index];
-        return `Registro deletado`
-      } 
+      if(index == -1){
         return `Registro não encontrado!`
+      } 
+      delete this.dataBase[index];
+      return `Registro deletado`
+        
     }
   
 }

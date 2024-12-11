@@ -7,38 +7,47 @@ const reportRepository = new ReportRepository;
 
 class ReportService{
 
-    constructor(){
-
-    }
-
     async getReports(): Promise <Report[]>{
-        const data = await reportRepository.getReports();
+        const data: Report [] = await reportRepository.getReports();
         return (data);
     }
 
-    async getReportByCode(code: string): Promise <Report | string> {
-        const foundData = await reportRepository.getReportByCode(code);
+    async getReportByCode(code: string): Promise <Report> {
+        const foundData: Report = await reportRepository.getReportByCode(code);
         return foundData;
 
     }
 
-    async addReport(reportData: Report): Promise <Report | string>{
-        const id = uuidv4();
-        reportData.id = id;
-        const addedData = await reportRepository.addReport(reportData);
+    async addReport(reportData: Report): Promise <Report>{
+        const patient_id = uuidv4();
+        reportData.personal_data.patient_id = patient_id;
+
+        const doctor_id = uuidv4();
+        reportData.doctor_data.doctor_id = doctor_id;
+
+        const discharge_id = uuidv4();
+        reportData.discharge_data.discharge_id = discharge_id;
+
+        const entry_id = uuidv4();
+        reportData.entry_data.entry_id = entry_id;
+
+        const report_id = uuidv4();
+        reportData.procedure_data.report_id = report_id;
+        
+        const addedData: Report = await reportRepository.addReport(reportData); 
         return addedData;   
     }
 
 
-    async updateReport(data: Report, id: string): Promise <Report | string>{
+    async updateReport(data: Report, id: string): Promise <Report>{
 
-        const updatedReport: Report | string= await reportRepository.updateReport(data, id);
+        const updatedReport: Report = await reportRepository.updateReport(data, id);
         return updatedReport;
 
     }
 
-    async deleteReport(id: string): Promise <String>{
-        const deletedReport: String = await reportRepository.deleteReport(id);
+    async deleteReport(id: string): Promise <string>{
+        const deletedReport: string = await reportRepository.deleteReport(id);
         return deletedReport;
     }
 
