@@ -13,7 +13,7 @@ class PDFGeneratorService{
             age: data.personal_data.age,
             city: data.personal_data.city,
             sex: data.personal_data.sex,
-            birth: data.personal_data.birth,
+            birth: data.personal_data.birthdate,
             cpf: data.personal_data.cpf,
             mother_name: data.personal_data.mother_name,
             relative_name: data.personal_data.relative_name,
@@ -41,7 +41,7 @@ class PDFGeneratorService{
             if(error){
                 console.log(error); 
             } else {
-                html_pdf.create(html, {}).toFile(`./public/reports/${data.procedure_data.report_code}_Prontuario.pdf`, (error, res) =>{
+                html_pdf.create(html, {}).toFile(`./public/reports/${data.procedure_data.report_code}_prontuario.pdf`, (error, res) =>{
                     if(error){
                         return error
                     } else {

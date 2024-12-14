@@ -1,0 +1,106 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Patient{
+
+patient_id            String      @id @default(uuid())
+name                  String
+first_name            String
+age                   String
+city                  String
+sex                   String
+birthdate             DateTime
+cpf                   String      @unique
+mother_name           String
+relative_name         String
+relative_first_name   String
+familiar_stand        String
+phone                 String
+procedure_id          String      @unique
+createdAt             DateTime    @default(now())
+updatedAt             DateTime    @updatedAt
+
+procedure Procedures[]
+
+@@map("patients")
+}
+
+
+model Procedures{
+
+procedure_id          String      @id @default(uuid())
+report_code           String
+procedure             String
+bed                   String
+procedure_status      String
+procedure_date        DateTime
+note                  String
+patient_id            String
+doctor_id             String      
+createdAt             DateTime    @default(now())
+updatedAt             DateTime    @updatedAt
+
+patient Patient @relation(fields: [patient_id], references: [patient_id])
+doctor Doctor   @relation(fields: [doctor_id], references: [doctor_id])
+
+@@map("procedures")
+}
+
+
+model Entry{
+
+entry_id              String      @id @default(uuid())
+entry_date            DateTime
+symptoms              String
+previous_diagnosis    String
+clinical_conditions   String
+note                  String      @db.Text
+patient_id            String
+procedure_id          String
+createdAt             DateTime    @default(now())
+updatedAt             DateTime    @updatedAt
+
+
+@@map("entry")
+}
+
+
+model Discharge{
+
+discharge_id          String      @id  @default(uuid())
+discharge_date        DateTime
+discharge_cause       String      
+note                  String      @db.Text
+patient_id            String      
+procedure_id          String      @unique
+createdAt             DateTime    @default(now())
+updatedAt             DateTime    @updatedAt
+
+@@map("discharges")
+}
+
+model Doctor{
+
+doctor_id             String      @id @default(uuid())
+doctor_name           String       
+doctor_first_name     String
+procedure_id          String      @unique
+createdAt             DateTime    @default(now())
+updatedAt             DateTime    @updatedAt
+
+procedure Procedures[]
+
+@@map("doctors")
+}

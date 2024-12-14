@@ -1,53 +1,42 @@
 import { Response } from "express";
 import { Report } from "../Models/Reports";
 import ReportRepository from "../Repositories/In_memory/InMemory_ReportRepository";
-import { v4 as uuidv4 } from 'uuid';
+import ReportPrismaRepository from "../Repositories/Prisma/PrismaReportRepository";
+import { IdInsertion } from "./Helpers/InsertionID";
 
-const reportRepository = new ReportRepository;
+const idInsertion = new IdInsertion();
 
 class ReportService{
 
+    constructor (private _database: ReportRepository | ReportPrismaRepository) {}
+
     async getReports(): Promise <Report[]>{
-        const data: Report [] = await reportRepository.getReports();
+        const data: Report [] = await this._database.getReports();
         return (data);
     }
 
-    async getReportByCode(code: string): Promise <Report> {
-        const foundData: Report = await reportRepository.getReportByCode(code);
+    /*async getReportByCode(code: string): Promise <Report> {
+        const foundData: Report = await this._database.getReportByCode(code);
         return foundData;
 
-    }
+    }*/
 
     async addReport(reportData: Report): Promise <Report>{
-        const patient_id = uuidv4();
-        reportData.personal_data.patient_id = patient_id;
-
-        const doctor_id = uuidv4();
-        reportData.doctor_data.doctor_id = doctor_id;
-
-        const discharge_id = uuidv4();
-        reportData.discharge_data.discharge_id = discharge_id;
-
-        const entry_id = uuidv4();
-        reportData.entry_data.entry_id = entry_id;
-
-        const report_id = uuidv4();
-        reportData.procedure_data.report_id = report_id;
-        
-        const addedData: Report = await reportRepository.addReport(reportData); 
+        const data: Report = await idInsertion.idInsertion(reportData);
+        const addedData: Report = await this._database.addReport(data); 
         return addedData;   
     }
 
 
     async updateReport(data: Report, id: string): Promise <Report>{
 
-        const updatedReport: Report = await reportRepository.updateReport(data, id);
+        const updatedReport: Report = await this._database.updateReport(data, id);
         return updatedReport;
 
     }
 
     async deleteReport(id: string): Promise <string>{
-        const deletedReport: string = await reportRepository.deleteReport(id);
+        const deletedReport: string = await this._database.deleteReport(id);
         return deletedReport;
     }
 

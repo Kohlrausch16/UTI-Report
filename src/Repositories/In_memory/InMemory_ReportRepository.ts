@@ -1,6 +1,7 @@
 import { Report } from "../../Models/Reports";
+import ReportPrismaRepository from "../Prisma/PrismaReportRepository";
 
-class ReportRepository {
+class ReportRepository implements ReportPrismaRepository{
   private dataBase: Report[];
 
     constructor() {
@@ -11,7 +12,7 @@ class ReportRepository {
       return this.dataBase;
     }
 
-    async getReportByCode(code: String): Promise<Report> {
+    /*async getReportByCode(code: String): Promise<void> {
       const data: Report[] = this.dataBase.filter((valor) => {
         return valor.procedure_data.report_code === code;
       });
@@ -21,11 +22,11 @@ class ReportRepository {
       }  
       return data[0];
     
-    }
+    }*/
 
     async getReportById(id: string): Promise <number>{
       return this.dataBase.findIndex((valor) =>{
-        return valor.procedure_data.report_id === id
+        return valor.procedure_data.procedure_id === id
       });
     }
 
@@ -51,7 +52,7 @@ class ReportRepository {
       }
 
       this.dataBase[index] = data;
-      this.dataBase[index].procedure_data.report_id = id;
+      this.dataBase[index].procedure_data.procedure_id = id;
       return this.dataBase[index];
     }
 
@@ -62,7 +63,6 @@ class ReportRepository {
       } 
       delete this.dataBase[index];
       return `Registro deletado`
-        
     }
   
 }

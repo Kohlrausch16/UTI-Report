@@ -13,19 +13,20 @@ export interface PerosnalData{
     age: string;
     city: string;
     sex: string;
-    birth: string;
+    birthdate: Date;
     cpf: string;
     mother_name: string;
     relative_name: string;
     relative_first_name: string;
     familiar_stand: string;
     phone: string;
+    procedure_id: string;
 }
 
 export interface DoctorData {
-doctor_id: string;
-doctor_name: string;
-doctor_first_name: string;
+    doctor_id: string;
+    doctor_name: string;
+    doctor_first_name: string;
 }
 
 export interface DischargeData{
@@ -33,6 +34,8 @@ export interface DischargeData{
     discharge_date: string;
     discharge_cause: string;
     discharge_note: string;
+    procedure_id: string;
+    patient_id: string;
 }
 
 export interface EntryData{
@@ -42,14 +45,20 @@ export interface EntryData{
     previous_diagnosis: string;
     clinical_conditions: string;
     entry_note: string;
+    procedure_id: string;
+    patient_id: string;
 }
     
 export interface ReportData{
-    report_id: string;
+    procedure_id: string;
     report_code: string;
     procedure: string;
     bed: string;
     procedure_status: string;
     procedure_note: string;
     procedure_date: string;
+    patient_id: string;
+    doctor_id: string;
+    discharge_id: string;
+    entry_id: string;
 }

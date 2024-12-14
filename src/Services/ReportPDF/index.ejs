@@ -1,55 +1,73 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><%= first_name%><%= name%>_Prontuário</title>
-    <link rel="stylesheet" href="./pdfStyle.css">
-</head>
-<body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>_prontuário</title>
+  </head>
+  <body>
+    <h1>Pontuário Médico &nbsp &nbsp</h1>
 
-    <h1> Pontuário Médico &nbsp &nbsp <%= report_code%></h1>
-    <hr>
+    
+    <hr />
     <div class="personal_data">
-        <h2> Dados pessoais </h2>
-        <p>Nome: <%= first_name%></p>
-        <p>Sobrenome: <%= name%></p>
-        <p>Idade: <%= age%></p>
-        <p>Cidade: <%= city%></p>
-        <p>Sexo: <%= sex%></p>
-        <p>Nascimento: <%= birth%></p>
-        <p>CPF: <%= cpf%></p>
-        <p>Nome da mãe: <%= mother_name%></p> 
+      <h2>Dados pessoais</h2>
+      <p>Nome: <%= first_name%></p>
+      <p>Sobrenome: <%= name%></p>
+      <p>Idade: <%= age%></p>
+      <p>Cidade: <%= city%></p>
+      <p>Sexo: <%= sex%></p>
+      <p>Nascimento: <%= birth%></p>
+      <p>CPF: <%= cpf%></p>
+      <p>Nome da mãe: <%= mother_name%></p>
     </div>
 
-    <hr>
+    <hr />
 
     <div class="relative_data">
-        <h2> Familar Responsável </h2>
-        <p>Familiar: <%= relative_first_name%> <%= relative_name%></p>
-        <p>Parentesco: <%= familiar_stand%></p>
-        <p>Contato:  <%= phone%></p>      
+      <h2>Familar Responsável</h2>
+      <p>Familiar: <%= relative_first_name%> <%= relative_name%></p>
+      <p>Parentesco: <%= familiar_stand%></p>
+      <p>Contato: <%= phone%></p>
     </div>
 
-    <hr>
+    <hr />
+
+    <div class="entry_data">
+      <h2>Informações de entrada na UTI</h2>
+      <p>Data de entrada: <%= entry_date%></p>
+      <p>Sintomas apresentados: <%= symptoms%></p>
+      <p>Diagnóstico inicial: <%= previous_diagnosis%></p>
+      <p>Condições clínicas: <%= clinical_conditions%></p>
+      <p>Observações: <%= entry_note%></p>
+    </div>
+
+    <hr />
 
     <div class="procedure_data">
-        <h2> Procediemento </h2>
-        <p>Procedimento: <%= procedure%></p>
-        <p>Data do procedimento: <%= procedure_date%></p>
-        <p>Leito: <%= bed%></p>
-        <p>Status do procedimento: <%= procedure_status%></p>       
+      <h2>Procediemento</h2>
+      <p>Procedimento: <%= procedure%></p>
+      <p>Data do procedimento: <%= procedure_date%></p>
+      <p>Leito: <%= bed%></p>
+      <p>Status do procedimento: <%= procedure_status%></p>
+      <p>Observações: <%= procedure_note %></p>
     </div>
 
-    <hr>
-   
+    <hr />
+
     <div class="doctor_data">
-        <h2> Médico Responsável </h2>
-        <p>Nome: <%= doctor_first_name%> <%= doctor_name%></p>     
-        
+      <h2>Médico Responsável</h2>
+      <p>Nome: <%= doctor_first_name%> <%= doctor_name%></p>
     </div>
-    
-    <hr>
-    
-</body>
+
+    <hr />
+
+    <div class="discharge_data">
+      <h2>Informações de saída da UTI</h2>
+      <p>Data de saída: <%= discharge_date%></p>
+      <p>Causa da saída: <%= discharge_cause%></p>
+      <p>Observações: <%= discharge_note%></p>
+    </div> ->
+
+  </body>
 </html>

@@ -1,12 +1,13 @@
-import { Request, Response } from "express";
+/*import { Request, Response } from "express";
 import ReportService from "../Services/ReportService";
 import { Report } from "../Models/Reports";
 import PDFGeneratorService from "../Services/PDFGeneratorService";
+import ReportRepository from "../Repositories/In_memory/InMemory_ReportRepository";
 
 class PDFGeneratorController {
   async generator(req: Request, res: Response): Promise<any> {
     try {
-      const reportService = new ReportService();
+      const reportService = new ReportService(new ReportRepository());
       const code: string = req.params.record_code;
       const data: Report | string = await reportService.getReportByCode(code);
 
@@ -26,4 +27,4 @@ class PDFGeneratorController {
   }
 }
 
-export default PDFGeneratorController;
+export default PDFGeneratorController;*/

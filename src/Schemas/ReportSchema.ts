@@ -12,7 +12,7 @@ export const reportDataSchema = object().shape({
                 return false
             } return true
         }).required("Sex is a required field!"),
-        birth: string().required("Birthdate is a required field!"),
+        birthdate: string().required("Birthdate is a required field!"),
         cpf: string().min(11).max(11).required("CPF is a required field!"),
         mother_name: string().required("Mother name is a required field!"),
         relative_name: string().required("Relative name is a required field!"),
@@ -29,8 +29,7 @@ export const reportDataSchema = object().shape({
     discharge_data: object().shape({
         discharge_date: string().required("Discharge date is a required field!"),
         discharge_cause: string().required("Discharge cause is a required field!"),
-        discharge_note: string().nullable(),
-        
+        discharge_note: string().nullable(),     
     }),
 
     entry_data: object().shape({

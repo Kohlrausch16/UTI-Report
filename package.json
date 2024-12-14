@@ -4,22 +4,25 @@
   "description": "EM DESENVOLVIMENTO - UTI-Report",
   "main": "index.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prisma": "prisma"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "@types/dotenv": "^6.1.1",
+    "@types/ejs": "^3.1.5",
     "@types/express": "^5.0.0",
     "@types/html-pdf": "^3.0.3",
     "@types/uuid": "^10.0.0",
     "@types/yup": "^0.29.14",
-    "@types/ejs": "^3.1.5",
+    "prisma": "^6.0.1",
     "ts-node": "^10.9.2",
     "typescript": "^5.7.2"
   },
   "dependencies": {
+    "@prisma/client": "^6.0.1",
     "@types/ejs": "^3.1.5",
     "class-validator": "^0.14.1",
     "dotenv": "^16.4.5",
