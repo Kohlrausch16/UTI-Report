@@ -8,13 +8,9 @@ export class IdInsertion{
 
         const patient_id = uuidv4();
         reportData.personal_data.patient_id = patient_id;
-        reportData.discharge_data.patient_id = patient_id;
-        reportData.entry_data.patient_id = patient_id
-        reportData.procedure_data.patient_id = patient_id;
  
         const doctor_id = uuidv4();
         reportData.doctor_data.doctor_id = doctor_id;
-        reportData.procedure_data.doctor_id = doctor_id;
 
         const discharge_id = uuidv4();
         reportData.discharge_data.discharge_id = discharge_id;
@@ -26,9 +22,6 @@ export class IdInsertion{
 
         const procedure_id = uuidv4();
         reportData.procedure_data.procedure_id = procedure_id;
-        reportData.entry_data.procedure_id = procedure_id;
-        reportData.discharge_data.procedure_id = procedure_id
-        reportData.personal_data.procedure_id = procedure_id
 
         return reportData
     }

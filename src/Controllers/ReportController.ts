@@ -2,10 +2,10 @@ import { Request, Response } from "express";
 import { Report } from "../Models/Reports";
 import ReportService from "../Services/ReportService";
 import { reportDataSchema} from "../Schemas/ReportSchema";
-import ReportPrismaRepository from "../Repositories/Prisma/PrismaReportRepository";
 import ReportRepository from "../Repositories/In_memory/InMemory_ReportRepository";
+import DatabaseRepository from "../Repositories/DataBase/DataBase_Repository";
 
-const reportService = new ReportService(new ReportPrismaRepository());
+const reportService = new ReportService(new DatabaseRepository());
 
 class ReportController {
 
@@ -22,7 +22,7 @@ class ReportController {
     }
   }
 
-  /*async getReportByCode(req: Request, res: Response){
+  async getReportByCode(req: Request, res: Response){
     const code: string = req.params.report_code;
     try{
       const foundData = await reportService.getReportByCode(code);
@@ -30,7 +30,7 @@ class ReportController {
     } catch (error:any){
       res.status(400).json({"error": error.message});
     }
-  }*/
+  }
 
   async addReport(req: Request, res: Response){
     const reportData = req.body;
@@ -62,7 +62,7 @@ class ReportController {
       const deletedReport: String = await reportService.deleteReport(id); 
       res.status(200).json(deletedReport);
     } catch (error: any){
-      res.status(400).json({error: "Não foi possível deletar o regitro"})
+      res.status(400).json({error: error.message})
     }
   }
 

@@ -13,7 +13,7 @@ export const reportDataSchema = object().shape({
             } return true
         }).required("Sex is a required field!"),
         birthdate: string().required("Birthdate is a required field!"),
-        cpf: string().min(11).max(11).required("CPF is a required field!"),
+        cpf: string().min(11, "CPF must contain at least 11 characters").max(11, "CPF must contain at most 11 characters").required("CPF is a required field!"),
         mother_name: string().required("Mother name is a required field!"),
         relative_name: string().required("Relative name is a required field!"),
         relative_first_name: string().required("Relative first name is a required field!"),
@@ -42,11 +42,13 @@ export const reportDataSchema = object().shape({
 
     procedure_data: object().shape({
         report_code: string().length(12).required("Report code is a required field!"),
-        procedure: string().required("Procedure is a required field!"),
+        procedure_name: string().required("Procedure name is a required field!"),
         bed: string().required("Bed identifier is a required field!"),
         procedure_status: string().nullable(),
         procedure_note: string().nullable(),
-        procedure_date: string().required("Procedure date is a required field!")
+        procedure_date: string().required("Procedure date is a required field!"),
+        patient_id: string(),
+        doctor_id: string()
     })
 });
 

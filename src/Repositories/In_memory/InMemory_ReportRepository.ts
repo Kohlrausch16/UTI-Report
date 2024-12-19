@@ -1,7 +1,7 @@
 import { Report } from "../../Models/Reports";
-import ReportPrismaRepository from "../Prisma/PrismaReportRepository";
+import DatabaseRepository from "../DataBase/DataBase_Repository";
 
-class ReportRepository implements ReportPrismaRepository{
+class ReportRepository /*implements DatabaseRepository*/{
   private dataBase: Report[];
 
     constructor() {
@@ -12,7 +12,7 @@ class ReportRepository implements ReportPrismaRepository{
       return this.dataBase;
     }
 
-    /*async getReportByCode(code: String): Promise<void> {
+    async getReportByCode(code: String): Promise<Report> {
       const data: Report[] = this.dataBase.filter((valor) => {
         return valor.procedure_data.report_code === code;
       });
@@ -22,7 +22,7 @@ class ReportRepository implements ReportPrismaRepository{
       }  
       return data[0];
     
-    }*/
+    }
 
     async getReportById(id: string): Promise <number>{
       return this.dataBase.findIndex((valor) =>{

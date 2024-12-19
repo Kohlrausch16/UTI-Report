@@ -1,5 +1,5 @@
 import { Report } from "../Models/Reports";
-import ejs, { resolveInclude } from "ejs";
+import ejs from "ejs";
 import html_pdf from "html-pdf"
 
 class PDFGeneratorService{
@@ -24,17 +24,17 @@ class PDFGeneratorService{
             doctor_first_name: data.doctor_data.doctor_first_name,
             discharge_date: data.discharge_data.discharge_date,
             discharge_cause: data.discharge_data.discharge_cause,
-            discharge_note: data.discharge_data.discharge_note,
+            discharge_note: data.discharge_data.note,
             entry_date: data.entry_data.entry_date,
             symptoms: data.entry_data.symptoms,
             previous_diagnosis: data.entry_data.previous_diagnosis,
             clinical_conditions: data.entry_data.clinical_conditions,
-            entry_note: data.entry_data.entry_note,
+            entry_note: data.entry_data.note,
             report_code: data.procedure_data.report_code,
-            procedure: data.procedure_data.procedure,
+            procedure: data.procedure_data.procedure_name,
             bed: data.procedure_data.bed,
             procedure_status: data.procedure_data.procedure_status,
-            procedure_note: data.procedure_data.procedure_note,
+            procedure_note: data.procedure_data.note,
             procedure_date: data.procedure_data.procedure_date
 
         }, (error, html) =>{
