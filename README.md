@@ -9,7 +9,7 @@ Além disto, o projeto oportuniza a utilização de bibliotecas JS, tais como im
 
 #Planejamento de desenvolvimento:
 
-##1 - Criação de rotas: 
+## 1 - Criação de rotas: 
 
 Etapa de criação de rotas responsáveis por realizar operações de CRUD dos relatórios. Para esta etapa também foram aplicadas a implementação de UUIDs para geração dos IDs dos relatórios, bem como realização da validação dos dados de entrada via Yup.
 
@@ -17,7 +17,7 @@ Realização de requisições HTTP (GET, POST, UPDATE e DELTE):
 https://github.com/user-attachments/assets/1175a68b-81ec-47a8-b5a3-a413b17ad601
 
 
-##2 - Gerador de prontuário: 
+## 2 - Gerador de prontuário: 
 
 Etapa de implementação do gerador de PDF, na qual um registro de prontuário é convertido em um arquivo PDF disponível para vizualização e/ou download. Para esta etapa, foram utilizadas as bibliotecas ejs, a qual é responsável por permitir a geração de um arquivo HTML dinâmico, o qual permite a implementação de variáveis, seguido da utilização da biblioteca html-pdf, a qual converte o arquivo .ejs gerado em PDF.
 
@@ -31,8 +31,8 @@ Documento PDF gerado com os dados do prontuário em memória:
 ![Captura de Tela (77)](https://github.com/user-attachments/assets/d54a0ade-0330-49a2-b4ce-65b9c3c1897b)
 
 
-##3 - Autenticação e autorização: 
+## 3 - Autenticação e autorização: 
 Implementação de middlewares responsáveis pela autenticação e controle de permissões de usuários - Em desenvolvimento...
 
-##4 - Conexão com banco: 
+## 4 - Conexão com banco: 
 Etapa de conexão da API com banco de dados MySQL - Em desenvolvimento...
