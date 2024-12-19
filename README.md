@@ -6,9 +6,6 @@ O projeto tem como objetivo a fixação de conteitos como rotas, tratamento de r
 
 Além disto, o projeto oportuniza a utilização de bibliotecas JS, tais como implementação de UUIDs, CORS, validações Yup, tokens JWT, criptografia Bcrytpt, ejs, html-pdf, etc.
 
-
-#Planejamento de desenvolvimento:
-
 ## 1 - Criação de rotas: 
 
 Etapa de criação de rotas responsáveis por realizar operações de CRUD dos relatórios. Para esta etapa também foram aplicadas a implementação de UUIDs para geração dos IDs dos relatórios, bem como realização da validação dos dados de entrada via Yup.
