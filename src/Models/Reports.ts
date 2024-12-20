@@ -32,7 +32,7 @@ export interface DischargeData{
     discharge_id: string;
     discharge_date: Date;
     discharge_cause: string;
-    note: string;
+    discharge_note: string;
 }
 
 export interface EntryData{
@@ -41,7 +41,7 @@ export interface EntryData{
     symptoms: string;
     previous_diagnosis: string;
     clinical_conditions: string;
-    note: string;
+    entry_note: string;
 }
     
 export interface ReportData{
@@ -50,7 +50,7 @@ export interface ReportData{
     procedure_name: string;
     bed: string;
     procedure_status: string;
-    note: string;
+    report_note: string;
     procedure_date: Date;
     patient_id: string;
     doctor_id: string;

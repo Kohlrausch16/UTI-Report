@@ -30,16 +30,16 @@ class DatabaseRepository {
   }
 
   async getReportByCode(code: string): Promise<Report> {
-    const foundReport = await client.query(
-      `Select * from reports where report_code = ?`,
-      code
-    );
+    const data = await this.getReports();
 
-    if (foundReport[0].length === 0) {
+    const foundReport = data[0].find((item: any) =>{
+      return item.report_code === code
+    });
+
+    if (!foundReport) {
       throw new Error(`Código ${code} não encontrado!`);
     }
 
-    delete foundReport[1];
     return foundReport;
   }
 
@@ -53,8 +53,6 @@ class DatabaseRepository {
 
     const foundReport = ifReportExists[0][0]
 
-
-
     return foundReport;
   }
 
@@ -66,6 +64,7 @@ class DatabaseRepository {
       const ifPatientDoesntExist: any = dataBaseData[0].find((item: any) => {
             return item.cpf === data.personal_data.cpf;
       });
+
 
       if(ifPatientDoesntExist === undefined){
         const patient_values = [
@@ -99,24 +98,24 @@ class DatabaseRepository {
       data.entry_data.symptoms,
       data.entry_data.previous_diagnosis,
       data.entry_data.clinical_conditions,
-      data.entry_data.note,
+      data.entry_data.entry_note,
     ];
 
     const addedEntry: EntryData = await client.query(
       `INSERT INTO entry
-        (entry_id, entry_date, symptoms, previous_diagnosis, clinical_conditions, note) 
+        (entry_id, entry_date, symptoms, previous_diagnosis, clinical_conditions, entry_note) 
         VALUES (?, ?, ?, ?, ?, ?); `, entry_values);
 
     const discharge_values = [
       data.discharge_data.discharge_id,
       data.discharge_data.discharge_date,
       data.discharge_data.discharge_cause,
-      data.discharge_data.note,
+      data.discharge_data.discharge_note,
     ];
 
     const addedDischarge: DischargeData = await client.query(
       ` INSERT INTO discharge
-            (discharge_id, discharge_date, discharge_cause, note) 
+            (discharge_id, discharge_date, discharge_cause, discharge_note) 
             VALUES (?, ?, ?, ?);`, discharge_values);
 
     const doctor_values = [
@@ -138,7 +137,7 @@ class DatabaseRepository {
       data.procedure_data.bed,
       data.procedure_data.procedure_status,
       data.procedure_data.procedure_date,
-      data.procedure_data.note,
+      data.procedure_data.report_note,
       data.personal_data.patient_id,
       data.doctor_data.doctor_id,
       data.entry_data.entry_id,
@@ -147,7 +146,7 @@ class DatabaseRepository {
 
     const addedReport: ReportData = await client.query(
       `INSERT INTO reports
-            (procedure_id, report_code, procedure_name, bed, procedure_status, procedure_date, note, patient_id, doctor_id, entry_id, discharge_id) 
+            (procedure_id, report_code, procedure_name, bed, procedure_status, procedure_date, report_note, patient_id, doctor_id, entry_id, discharge_id) 
             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);`, report_values);
 
     return this.getReportByCode(data.procedure_data.report_code);

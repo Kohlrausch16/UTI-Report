@@ -45,10 +45,10 @@ export const reportDataSchema = object().shape({
         procedure_name: string().required("Procedure name is a required field!"),
         bed: string().required("Bed identifier is a required field!"),
         procedure_status: string().nullable(),
-        procedure_note: string().nullable(),
+        report_note: string().nullable(),
         procedure_date: string().required("Procedure date is a required field!"),
-        patient_id: string(),
-        doctor_id: string()
+        patient_id: string().nullable(),
+        doctor_id: string().nullable()
     })
 });
 
