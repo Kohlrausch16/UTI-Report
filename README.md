@@ -33,24 +33,28 @@ Implementação de middlewares responsáveis pela autenticação e controle de p
 
 ## 4 - Conexão com banco: 
 
-Etapa de conexão da API com banco de dados MySQL. Para esta etapa foram realizadas a criação do diagrama de entidade e relacionamento do banco - o qual pode ser observado na imagem abaixo -, bem como a implementação de queries SQL para a consulta, armazenamento e manipulação de dados em uma base MySQL. 
+Etapa de conexão da API com banco de dados MySQL. Para esta etapa foram realizadas a criação do diagrama de entidade e relacionamento do banco através da ferramenta LucidChart - o qual pode ser observado na imagem abaixo -, bem como a implementação de queries SQL para a consulta, armazenamento e manipulação de dados em uma base MySQL. 
 Para o banco de dados, foram elaboradas as seguintes tabelas:
-
-PAra a elaboração do diagrama, foi utilizada a ferramente LucidChart;
 
 Diagrama de entidade e relacionamento:
 ![Captura de Tela (81)](https://github.com/user-attachments/assets/ebaef362-b76d-4393-ac31-006459fdea54)
 
-
 REPORTS - Contém os dados do prontuário;
+
 PATIENT - Contém o cadastro dos pacientes, podendo estes estar vinculados a mais de um prontuário diferente;
+
 DOCTOR - Contém os dados de cadastro do médico responsável pelo prontuário e, assim como os registros de pacientes, podem estar vinculados a mais de um prontuário;
+
 ENTRY - Contém os dados de entrada de um paciente na UTI, tais como os sintomas apresentados, motivo da internação, condições clinicas prévias, etc;
+
 DISCHARGE - Contém os dados de saída de um paciente, como data, motivo, observações, etc.
 
 Abaixo, as relações entre as tabelas:
 
 REPORTS - PATIENT    => one-to-many
+
 REPORTS - DOCTOR     => one-to-many
+
 REPORT - ENTRY       => one-to-one
+
 REPORTS - DISCHARGE  => one-to-one
