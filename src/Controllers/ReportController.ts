@@ -51,7 +51,7 @@ class ReportController {
       const updatedReport: Report | string = await reportService.updateReport(data, id);
       res.status(200).json(updatedReport);
     } catch (error: any) {
-        res.status(400).json({error: "Não foi possível atualizar o regitro"});
+        res.status(400).json({error: error.message});
     }
   }
 

@@ -65,7 +65,6 @@ class DatabaseRepository {
             return item.cpf === data.personal_data.cpf;
       });
 
-
       if(ifPatientDoesntExist === undefined){
         const patient_values = [
           data.personal_data.patient_id,
@@ -153,7 +152,81 @@ class DatabaseRepository {
   }
 
   async updateReport(data: Report, id: string): Promise<Report> {
-    return data;
+
+    const foundData: any = await this.getReportById(id);
+
+    const patient_values = [
+      data.personal_data.name,
+      data.personal_data.first_name,
+      data.personal_data.age,
+      data.personal_data.city,
+      data.personal_data.sex,
+      data.personal_data.birthdate,
+      data.personal_data.cpf,
+      data.personal_data.mother_name,
+      data.personal_data.relative_name,
+      data.personal_data.relative_first_name,
+      data.personal_data.familiar_stand,
+      data.personal_data.phone,
+      foundData.patient_id
+    ];
+
+  
+    const updatedPatientData = await client.query(`UPDATE patient SET 
+    last_name=?, first_name=?, age=?, city=?, sex=?, birthdate=?, cpf=?, mother_name=?, relative_name=?, relative_first_name=?, familiar_stand=?, phone=? WHERE patient_id=?`, patient_values);
+
+
+    const entry_values = [
+      data.entry_data.entry_date,
+      data.entry_data.symptoms,
+      data.entry_data.previous_diagnosis,
+      data.entry_data.clinical_conditions,
+      data.entry_data.entry_note,
+      foundData.entry_id
+    ];
+  
+    const updatedEntryData = await client.query(`UPDATE entry SET 
+    entry_date=?, symptoms=?, previous_diagnosis=?, clinical_conditions=?, entry_note=? WHERE entry_id=?`, entry_values);
+
+    
+    const discharge_values = [
+      data.discharge_data.discharge_date,
+      data.discharge_data.discharge_cause,
+      data.discharge_data.discharge_note,
+      foundData.discharge_id
+    ];
+
+    const updatedDischargeData = await client.query(`UPDATE discharge SET 
+      discharge_date=?, discharge_cause=?, discharge_note=? WHERE discharge_id=?`, discharge_values);
+
+    const doctor_values = [
+      data.doctor_data.doctor_name,
+      data.doctor_data.doctor_first_name,
+      foundData.doctor_id
+    ];
+  
+      const updatedDoctorData = await client.query(`UPDATE doctor SET 
+        doctor_name=?, doctor_first_name=? WHERE doctor_id=?`, doctor_values);
+
+    const report_values = [
+      data.procedure_data.report_code,
+      data.procedure_data.procedure_name,
+      data.procedure_data.bed,
+      data.procedure_data.procedure_status,
+      data.procedure_data.procedure_date,
+      data.procedure_data.report_note,
+      foundData.patient_id,
+      foundData.doctor_id,
+      foundData.entry_id, 
+      foundData.discharge_id,
+      foundData.procedure_id
+    ];
+
+    const updatedReportData = await client.query(`UPDATE reports SET 
+      report_code=?, procedure_name=?, bed=?, procedure_status=?, procedure_date=?, report_note=?, patient_id=?, doctor_id=?, entry_id=?, discharge_id=? WHERE procedure_id=?`, report_values);
+   
+
+    return await this.getReportByCode(data.procedure_data.report_code);
   }
 
   async deleteReport(id: string): Promise<string> {
