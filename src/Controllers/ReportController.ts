@@ -5,7 +5,7 @@ import { reportDataSchema} from "../Schemas/ReportSchema";
 import ReportRepository from "../Repositories/In_memory/InMemory_ReportRepository";
 import DatabaseRepository from "../Repositories/DataBase/DataBase_Repository";
 
-const reportService = new ReportService(new DatabaseRepository());
+const reportService = new ReportService(new ReportRepository());
 
 class ReportController {
 

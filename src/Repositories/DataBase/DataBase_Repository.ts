@@ -1,8 +1,9 @@
 import dotenv from "dotenv";
 import { Report, EntryData, DischargeData, PersonalData, ReportData, DoctorData } from "../../Models/Reports";
 
+dotenv.config();
 const mysql = require("mysql2/promise");
-const client = mysql.createPool("mysql://root:@localhost:3306/mydb");
+const client = mysql.createPool(process.env.CONECTION_STRING);
 console.log("Conetando com o banco...");
 
 class DatabaseRepository {

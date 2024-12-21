@@ -28,7 +28,7 @@ class ReportRepository /*implements DatabaseRepository*/{
       return this.dataBase.findIndex((valor) =>{
         return valor.procedure_data.procedure_id === id
       });
-    }
+    } 
 
     async addReport(reportData: Report): Promise<Report> {
       const verify = this.dataBase.filter((dado) => {
