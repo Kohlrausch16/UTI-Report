@@ -28,8 +28,16 @@ Documento PDF gerado com os dados do prontuário em memória:
 ![Captura de Tela (77)](https://github.com/user-attachments/assets/d54a0ade-0330-49a2-b4ce-65b9c3c1897b)
 
 
-## 3 - Autenticação e autorização: 
-Implementação de middlewares responsáveis pela autenticação e controle de permissões de usuários - Em desenvolvimento...
+## 3 - Autenticação de usuário: 
+
+Etapa de implementação de um microgerenciador de acessos.
+
+Para esta etapa, foram desenvolvidas duas rotas destinada para a criação e exclusão de registros.
+Com isto, foi desenvolvido um sistema de autenticação de usuários onde as credencias de entrada (email e senha) são verificadas na base de dados mysql e, caso compativeis com um usuário cadastrado, retornam um token (e refresh token) JWT de acesso. A etapa também abrange conceitos como criptografia de senhas por meio da biblioteca bcrypt.
+
+Geração de um JWT após localização das credenciais na base de dados:
+![Captura de Tela (82)](https://github.com/user-attachments/assets/73dd1429-dfdd-4f6d-816b-b9d43fb96f70)
+
 
 ## 4 - Conexão com banco: 
 
