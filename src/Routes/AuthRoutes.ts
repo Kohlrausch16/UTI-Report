@@ -7,8 +7,8 @@ const authController = new AuthController();
 
 
 
-authRouter.post('/auth', );
-authRouter.post('/refresh_token', );
+authRouter.post('/auth', authController.token);
+authRouter.post('/refresh_token', authController.refreshToken);
 
 
 authRouter.post('/auth/user', authController.createUser);

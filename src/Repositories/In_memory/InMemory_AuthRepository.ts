@@ -1,7 +1,8 @@
 import { User } from "../../Models/AuthUser";
+import { AuthToken } from "../../Models/AuthAccess";
+import DataBaseUsersRepository from "../DataBase/DataBaseUsersRepository";
 
-
-class InMemoryAuthRepository{
+class InMemoryAuthRepository implements DataBaseUsersRepository{
 
     private _database: User[];
 
@@ -11,21 +12,34 @@ class InMemoryAuthRepository{
     }
 
 
-    async getUserByEmail(addedData: User){
+    getUserByEmail(addedData: User): User{
         const ifEmailExists = this._database.find((item) =>{
             return item.email === addedData.email
         });
         if(ifEmailExists){
             throw new Error(`O email ${addedData.email} já está cadastrado`);
         }
-        addedData.password = "Não informado por questão de segurança"
         return addedData;
     }
 
+    getUserByEmailAuthentication(data: AuthToken): User{
 
-    getUserById(user_id: string): number{
+        const foundUser: User | undefined = this._database.find((item) =>{
+            return item.email === data.email
+        });
 
-        const foundUser: number | undefined = this._database.findIndex((item) =>{
+        if(foundUser === undefined){
+            throw new Error("Acesso negado!");
+        }
+
+        return foundUser
+
+    }
+
+
+    async getUserById(user_id: string): Promise <number | string>{
+
+        const foundUser: number = this._database.findIndex((item) =>{
             return item.user_id === user_id;
         });
         if(foundUser === -1){
@@ -43,7 +57,7 @@ class InMemoryAuthRepository{
 
     async deleteUser(user_id: string): Promise <string>{
 
-        const foundUser = await this.getUserById(user_id);
+        const foundUser: any = await this.getUserById(user_id);
         delete this._database[foundUser];
         return `Usuário ${user_id} deletado`
     }

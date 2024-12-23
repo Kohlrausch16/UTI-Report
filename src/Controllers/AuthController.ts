@@ -3,12 +3,49 @@ import InMemoryAuthRepository from "../Repositories/In_memory/InMemory_AuthRepos
 import AuthService from "../Services/AuthService";
 import { Request, Response } from "express";
 import { userSchema } from "../Schemas/UserSchema";
+import { authTokenSchema, authRefreshTokenSchema } from "../Schemas/AuthSchema";
+import { AuthRefreshToken } from "../Models/AuthAccess";
+import DataBaseUsersRepository from "../Repositories/DataBase/DataBaseUsersRepository";
 
-const authService = new AuthService(new InMemoryAuthRepository());
+const authService = new AuthService(new DataBaseUsersRepository());
 
 
 class AuthController{
 
+
+
+    async token(req: Request, res: Response){
+
+        try {
+            const validatedData = req.body;
+            await authTokenSchema.validate(validatedData, {stripUnknown: true});
+            const {token, refreshToken} = await authService.token(req.body);
+            res.status(200).json({token, refreshToken});
+
+        } catch (error: any) {
+            res.status(400).json({error: error.message})
+        }
+        
+    }
+
+
+    async refreshToken(req: Request, res: Response){
+
+        try {
+            const {token, refresh_token} = req.headers;
+            
+            await authRefreshTokenSchema.validate({token, refresh_token}, {stripUnknown: true});
+            const result = await authService.refreshToken({token, refresh_token} as AuthRefreshToken);
+            console.log(result);
+
+            res.status(200).json(result);
+            
+        } catch (error: any) {
+            res.status(400).json(error)
+
+        }
+    }
+    
 
     async createUser(req: Request, res: Response){
         try{

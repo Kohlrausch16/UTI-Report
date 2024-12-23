@@ -3,7 +3,7 @@ import ReportService from "../Services/ReportService";
 import { Report } from "../Models/Reports";
 import PDFGeneratorService from "../Services/PDFGeneratorService";
 import ReportRepository from "../Repositories/In_memory/InMemory_ReportRepository";
-import DatabaseRepository from "../Repositories/DataBase/DataBase_Repository";
+import DatabaseRepository from "../Repositories/DataBase/DataBaseReportRepository";
 
 class PDFGeneratorController {
   async generator(req: Request, res: Response): Promise<any> {
@@ -14,7 +14,7 @@ class PDFGeneratorController {
       const data: any = await reportService.getReportByCode(code);
 
       if (typeof data !== "string") {
-        const pdfGeneratorService = new PDFGeneratorService();  
+        const pdfGeneratorService = new PDFGeneratorService();
         const document: File = await pdfGeneratorService.generate(
           data as Report
         );
