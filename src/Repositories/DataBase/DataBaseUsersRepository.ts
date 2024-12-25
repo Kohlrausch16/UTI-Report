@@ -40,8 +40,8 @@ class DataBaseUsersRepository{
     }
 
 
-    async getRoleById(id: string): Promise <any>{
-
+    async getRoleById( user_id: string): Promise <any>{
+        
         const userData = await client.query(`
             SELECT
                 users.*,
@@ -49,7 +49,8 @@ class DataBaseUsersRepository{
             
             from users
                 inner join user_role
-                    on users.user_role_id = user_role.user_role_id;`, id);   
+                    on users.user_role_id = user_role.user_role_id
+                WHERE user_id =?;`, user_id);   
 
         return userData[0][0];
 

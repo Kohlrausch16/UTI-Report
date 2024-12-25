@@ -1,8 +1,9 @@
-import express, {urlencoded} from "express";
+import express from "express";
 import dotenv from "dotenv";
 import authRouter from "./src/Routes/AuthRoutes";
 import reportRouter from "./src/Routes/ReportRoutes";
 import pdfRouter from "./src/Routes/PDFGeneratorRoutes";
+
 
 dotenv.config();
 

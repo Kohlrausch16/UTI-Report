@@ -10,22 +10,25 @@ export const authozitationMiddleware  = (access: string) => {
 
         const dataBaseRepository = new DataBaseUsersRepository();
         const token: any = req.headers.token;
-        const { user_id, user_role, email, password }: any = decodeJWT(token);
-        const decodedUser: User = { user_id, user_role, email, password };
+        const { user_id, user_role_id, email, password }: any = decodeJWT(token);
 
-        const data = await dataBaseRepository.getRoleById(decodedUser.user_role);
+        const decodedUser = { user_id, user_role_id, email, password };
 
-        let item = '';
 
-        for(item in data){
+        console.log({decodedUser});
+        console.log('======================');
+
+        const data = await dataBaseRepository.getRoleById(user_id);
+
+        console.log(data);
+
+        for(let item in data){
           if(item === access){
             console.log(data[item]);
             console.log(data)
             if(data[access] === 1){
-              console.log('Pelo menos passou por aqui!');
               next();
             } else {
-              throw new Error('Usuário não pode acessar a rota!');
             }
           }
         }
