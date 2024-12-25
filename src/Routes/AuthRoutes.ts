@@ -12,10 +12,8 @@ authRouter.post('/refresh_token', authController.refreshToken);
 
 
 authRouter.post('/auth/user', authController.createUser);
+authRouter.post('/auth/role', authController.createRole);
 authRouter.delete('/auth/user/:user_id', authController.deleteUser);
-
-
-authRouter.post('/auth/password');
 
 
 

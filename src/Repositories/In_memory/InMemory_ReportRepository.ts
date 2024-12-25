@@ -32,9 +32,7 @@ class ReportRepository /*implements DatabaseRepository*/ {
   async addReport(reportData: Report): Promise<Report> {
     const verify = this.dataBase.filter((dado) => {
       return (
-        dado.procedure_data.report_code ===
-        reportData.procedure_data.report_code
-      );
+        dado.procedure_data.report_code === reportData.procedure_data.report_code);
     });
 
     if (verify.length > 0) {

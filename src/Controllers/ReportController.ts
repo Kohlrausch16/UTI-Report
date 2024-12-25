@@ -1,11 +1,11 @@
 import { Request, Response } from "express";
 import { Report } from "../Models/Reports";
 import ReportService from "../Services/ReportService";
-import { reportDataSchema } from "../Schemas/ReportSchema";
+import { reportDataSchema } from "./Schemas/ReportSchema";
 import ReportRepository from "../Repositories/In_memory/InMemory_ReportRepository";
 import DatabaseRepository from "../Repositories/DataBase/DataBaseReportRepository";
 
-const reportService = new ReportService(new ReportRepository());
+const reportService = new ReportService(new DatabaseRepository());
 
 class ReportController {
   async getReports(req: Request, res: Response) {

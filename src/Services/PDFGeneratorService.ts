@@ -39,7 +39,6 @@ class PDFGeneratorService{
 
         }, (error, html) =>{
             if(error){
-                console.log(error); 
             } else {
                 html_pdf.create(html, {}).toFile(`./public/reports/${data.report_code}_prontuario.pdf`, (error, res) =>{
                     if(error){

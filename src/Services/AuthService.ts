@@ -1,6 +1,6 @@
 import InMemoryAuthRepository from "../Repositories/In_memory/InMemory_AuthRepository";
 import { AuthToken, AuthRefreshToken } from "../Models/AuthAccess";
-import { User } from "../Models/AuthUser";
+import { User, UserRole } from "../Models/AuthUser";
 import { v4 as uuidv4 } from "uuid";
 import bcrypt from "bcrypt";
 import {generateJWT, verifyJWT, decodeJWT} from "./Helpers/authHelper"
@@ -8,13 +8,13 @@ import DataBaseUsersRepository from "../Repositories/DataBase/DataBaseUsersRepos
 
 class AuthService{
 
-    constructor(private _authDatabase: InMemoryAuthRepository | DataBaseUsersRepository){}
+    constructor(private _authDatabase: DataBaseUsersRepository){}
 
 
     async token(validatedData: AuthToken): Promise <({token: string, refreshToken: string})>{
 
-        const foundData: User = await this._authDatabase.getUserByEmailAuthentication(validatedData);
-        console.log(foundData);
+        const foundData: User = await this._authDatabase.getUserByEmail(validatedData);
+
         const passwordValidation: boolean = await bcrypt.compare(validatedData.password, foundData.password);
 
         if(!passwordValidation){
@@ -54,6 +54,12 @@ class AuthService{
         return createdUser;
     }
 
+
+    async createRole(data: UserRole): Promise <UserRole>{
+        data.user_role_id = uuidv4();
+        const createdRole: UserRole = await this._authDatabase.createRole(data);
+        return createdRole;
+    }
 
     async deleteUser(user_id: string): Promise <string>{
         const deletedUser: string = await this._authDatabase.deleteUser(user_id);

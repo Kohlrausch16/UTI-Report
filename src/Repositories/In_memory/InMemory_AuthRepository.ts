@@ -2,7 +2,7 @@ import { User } from "../../Models/AuthUser";
 import { AuthToken } from "../../Models/AuthAccess";
 import DataBaseUsersRepository from "../DataBase/DataBaseUsersRepository";
 
-class InMemoryAuthRepository implements DataBaseUsersRepository{
+class InMemoryAuthRepository{
 
     private _database: User[];
 
@@ -20,20 +20,6 @@ class InMemoryAuthRepository implements DataBaseUsersRepository{
             throw new Error(`O email ${addedData.email} já está cadastrado`);
         }
         return addedData;
-    }
-
-    getUserByEmailAuthentication(data: AuthToken): User{
-
-        const foundUser: User | undefined = this._database.find((item) =>{
-            return item.email === data.email
-        });
-
-        if(foundUser === undefined){
-            throw new Error("Acesso negado!");
-        }
-
-        return foundUser
-
     }
 
 
