@@ -24,11 +24,8 @@ export const authozitationMiddleware  = (access: string) => {
 
         for(let item in data){
           if(item === access){
-            console.log(data[item]);
-            console.log(data)
             if(data[access] === 1){
               next();
-            } else {
             }
           }
         }

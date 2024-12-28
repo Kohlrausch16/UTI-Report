@@ -8,7 +8,7 @@ export interface Report {
 
 export interface PersonalData{
     patient_id: string;
-    name: string;
+    last_name: string;
     first_name: string;
     age: string;
     city: string;

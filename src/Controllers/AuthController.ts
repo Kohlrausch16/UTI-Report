@@ -25,7 +25,10 @@ class AuthController {
     try {
       const { token, refresh_token } = req.headers;
 
-      await authRefreshTokenSchema.validate({ token, refresh_token }, { stripUnknown: true });
+      await authRefreshTokenSchema.validate(
+        { token, refresh_token },
+        { stripUnknown: true }
+      );
       const result = await authService.refreshToken({
         token,
         refresh_token,
@@ -38,7 +41,6 @@ class AuthController {
   }
 
   async createUser(req: Request, res: Response) {
-
     try {
       const data: User = await userSchema.validate(req.body, {
         stripUnknown: true,
@@ -51,18 +53,17 @@ class AuthController {
     }
   }
 
-  async createRole(req: Request, res: Response){
+  async createRole(req: Request, res: Response) {
+    try {
+      const data: UserRole | any = await roleSchema.validate(req.body, {
+        stripUnknown: true,
+      });
+      const createdRole: UserRole = await authService.createRole(data);
 
-      try{
-
-        const data: UserRole | any = await roleSchema.validate(req.body, {stripUnknown: true});
-        const createdRole: UserRole = await authService.createRole(data);
-
-        res.status(200).json(createdRole);
-
-      } catch(error: any){
-        res.status(400).json({error: error.message})
-      }
+      res.status(200).json(createdRole);
+    } catch (error: any) {
+      res.status(400).json({ error: error.message });
+    }
   }
 
   async deleteUser(req: Request, res: Response) {

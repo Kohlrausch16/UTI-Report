@@ -1,5 +1,7 @@
 import dotenv from "dotenv";
 import { Report, EntryData, DischargeData, PersonalData, ReportData, DoctorData } from "../../Models/Reports";
+import { reportDataExtraction, personalDataExtraction, doctorDataExtraction } from "./Helpers/DataExtractorHelper"; 
+import { outputData } from "./Helpers/OutputDataHelper";
 
 dotenv.config();
 const mysql = require("mysql2/promise");
@@ -8,7 +10,7 @@ console.log("Conetando com o banco...");
 
 class DatabaseRepository {
   async getReports(): Promise<any> {
-    const allData: Report[] = await client.query(`
+    const allData: any = await client.query(`
             SELECT
             reports.*,
             patient.*,
@@ -25,16 +27,15 @@ class DatabaseRepository {
                 on reports.entry_id = entry.entry_id
             inner join discharge
                 on reports.discharge_id = discharge.discharge_id;`);
-
-    delete allData[1];
-    return allData;
+      
+    const foundData: Report[] = await outputData(allData[0]);
+    return foundData;
   }
 
   async getReportByCode(code: string): Promise<Report> {
     const data = await this.getReports();
-
-    const foundReport = data[0].find((item: any) =>{
-      return item.report_code === code
+    const foundReport: Report | undefined = data.find((item: any) =>{
+      return item.procedure_data.report_code === code
     });
 
     if (!foundReport) {
@@ -47,117 +48,105 @@ class DatabaseRepository {
   async getReportById(id: string): Promise<Report> {
     const ifReportExists = await client.query(
       `Select * from reports where procedure_id = ?`,id);
-
-    if (ifReportExists[0].length === 0) {
+    if (ifReportExists.length === 0) {
       throw new Error(`Código ${id} não encontrado!`);
     }
-
     const foundReport = ifReportExists[0][0]
-
     return foundReport;
   }
 
 
   async addReport(data: Report): Promise<Report> {
 
+      console.log(data);
+      
       const dataBaseData = await this.getReports();
 
-      const ifPatientDoesntExist: any = dataBaseData[0].find((item: any) => {
-            return item.cpf === data.personal_data.cpf;
+      const ifPatientExists: any = dataBaseData.find((item: any) => {
+        return item.personal_data.cpf === data.personal_data.cpf;
       });
 
-      if(ifPatientDoesntExist === undefined){
-        const patient_values = [
-          data.personal_data.patient_id,
-          data.personal_data.name,
-          data.personal_data.first_name,
-          data.personal_data.age,
-          data.personal_data.city,
-          data.personal_data.sex,
-          data.personal_data.birthdate,
-          data.personal_data.cpf,
-          data.personal_data.mother_name,
-          data.personal_data.relative_name,
-          data.personal_data.relative_first_name,
-          data.personal_data.familiar_stand,
-          data.personal_data.phone,
-        ];
-    
-        const addedPatient: PersonalData = await client.query(
-          `INSERT INTO patient
-                (patient_id, last_name, first_name, age, city, sex, birthdate, cpf, mother_name, relative_name, relative_first_name, familiar_stand, phone)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);`, patient_values);
+      const ifDoctorExists: any = dataBaseData.find((item: any) => {
+        return item.doctor_data.doctor_id === data.procedure_data.doctor_id;
+      });
 
-      } else {
-        data.personal_data.patient_id = ifPatientDoesntExist.patient_id
+      const ifReportExists: any = dataBaseData.find((item: any) => {
+        return item.procedure_data.report_code === data.procedure_data.report_code;
+      });
+
+
+      if(ifReportExists !== undefined){
+        throw new Error (`Prontuário ${data.procedure_data.report_code} já existente!`);
       }
 
-    const entry_values = [
-      data.entry_data.entry_id,
-      data.entry_data.entry_date,
-      data.entry_data.symptoms,
-      data.entry_data.previous_diagnosis,
-      data.entry_data.clinical_conditions,
-      data.entry_data.entry_note,
-    ];
+      if(ifPatientExists === undefined){
+        const patient_values = await personalDataExtraction(data as Report);
+        console.log(patient_values);
 
-    const addedEntry: EntryData = await client.query(
-      `INSERT INTO entry
-        (entry_id, entry_date, symptoms, previous_diagnosis, clinical_conditions, entry_note) 
-        VALUES (?, ?, ?, ?, ?, ?); `, entry_values);
+        const addedPatient: PersonalData = await client.query(
+          `INSERT INTO patient
+            (patient_id, last_name, first_name, age, city, sex, birthdate, cpf, mother_name, relative_name, relative_first_name, familiar_stand, phone)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);`, patient_values);
+      } else {
+          data.personal_data.patient_id = ifPatientExists.patient_id;
+      }
 
-    const discharge_values = [
-      data.discharge_data.discharge_id,
-      data.discharge_data.discharge_date,
-      data.discharge_data.discharge_cause,
-      data.discharge_data.discharge_note,
-    ];
+      if(ifDoctorExists === undefined){
+        const doctor_values = await doctorDataExtraction(data as Report);
 
-    const addedDischarge: DischargeData = await client.query(
-      ` INSERT INTO discharge
-            (discharge_id, discharge_date, discharge_cause, discharge_note) 
-            VALUES (?, ?, ?, ?);`, discharge_values);
-
-    const doctor_values = [
-      data.doctor_data.doctor_id,
-      data.doctor_data.doctor_name,
-      data.doctor_data.doctor_first_name,
-    ];
-
-    const addedDoctor: DoctorData = await client.query(
-      `INSERT INTO doctor 
+        const addedDoctor: DoctorData = await client.query(
+        `INSERT INTO doctor 
             (doctor_id, doctor_name, doctor_first_name)
              VALUES (?, ?, ?);`, doctor_values);
+      } else {
+          data.doctor_data.doctor_id = ifDoctorExists.doctor_id;
+      }
 
+      const {discharge_values, entry_values, report_values} = await reportDataExtraction(data as Report);
+        
+      const addedEntry: EntryData = await client.query(
+        `INSERT INTO entry
+          (entry_id, entry_date, symptoms, previous_diagnosis, clinical_conditions, entry_note) 
+          VALUES (?, ?, ?, ?, ?, ?); `, entry_values);
 
-    const report_values = [
-      data.procedure_data.procedure_id,
-      data.procedure_data.report_code,
-      data.procedure_data.procedure_name,
-      data.procedure_data.bed,
-      data.procedure_data.procedure_status,
-      data.procedure_data.procedure_date,
-      data.procedure_data.report_note,
-      data.personal_data.patient_id,
-      data.doctor_data.doctor_id,
-      data.entry_data.entry_id,
-      data.discharge_data.discharge_id,
-    ];
+      const addedDischarge: DischargeData = await client.query(
+        ` INSERT INTO discharge
+              (discharge_id, discharge_date, discharge_cause, discharge_note) 
+              VALUES (?, ?, ?, ?);`, discharge_values);
 
-    const addedReport: ReportData = await client.query(
+      const addedReport: ReportData = await client.query(
       `INSERT INTO reports
-            (procedure_id, report_code, procedure_name, bed, procedure_status, procedure_date, report_note, patient_id, doctor_id, entry_id, discharge_id) 
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);`, report_values);
+        (procedure_id, report_code, procedure_name, bed, procedure_status, procedure_date, report_note, patient_id, doctor_id, entry_id, discharge_id) 
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);`, report_values);
 
-    return this.getReportByCode(data.procedure_data.report_code);
+      const report = {entry_values, discharge_values, report_values};
+  
+      return this.getReportByCode(data.procedure_data.report_code);
   }
 
-  async updateReport(data: Report, id: string): Promise<Report> {
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  async updateReport(data: any, id: string): Promise<Report> {
 
     const foundData: any = await this.getReportById(id);
 
     const patient_values = [
-      data.personal_data.name,
+      data.personal_data.last_name,
       data.personal_data.first_name,
       data.personal_data.age,
       data.personal_data.city,
