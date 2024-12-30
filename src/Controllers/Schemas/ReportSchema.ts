@@ -3,7 +3,7 @@ import yup, {object, string } from "yup";
 
 export const reportDataSchema = object().shape({
     personal_data: object().shape({
-        name: string().required("Name is a required field!"),
+        last_name: string().required("Last name is a required field!"),
         first_name: string().required("First name is a required field!"),
         age: string().required("Age is a required field!"),
         city: string().required("City is a required field!"),

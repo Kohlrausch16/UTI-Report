@@ -46,34 +46,33 @@ class DatabaseRepository {
   }
 
   async getReportById(id: string): Promise<Report> {
-    const ifReportExists = await client.query(
-      `Select * from reports where procedure_id = ?`,id);
-    if (ifReportExists.length === 0) {
-      throw new Error(`Código ${id} não encontrado!`);
+    const data = await this.getReports();
+    const foundReport: Report | undefined = data.find((item: any) =>{
+      return item.procedure_data.procedure_id === id
+    });
+
+    if (!foundReport) {
+      throw new Error(`Prontuário ${id} não encontrado!`);
     }
-    const foundReport = ifReportExists[0][0]
     return foundReport;
   }
 
 
   async addReport(data: Report): Promise<Report> {
 
-      console.log(data);
-      
       const dataBaseData = await this.getReports();
 
-      const ifPatientExists: any = dataBaseData.find((item: any) => {
+      const ifPatientExists: Report | undefined = dataBaseData.find((item: any) => {
         return item.personal_data.cpf === data.personal_data.cpf;
       });
 
-      const ifDoctorExists: any = dataBaseData.find((item: any) => {
+      const ifDoctorExists: Report | undefined = dataBaseData.find((item: any) => {
         return item.doctor_data.doctor_id === data.procedure_data.doctor_id;
       });
 
-      const ifReportExists: any = dataBaseData.find((item: any) => {
+      const ifReportExists: Report | undefined = dataBaseData.find((item: any) => {
         return item.procedure_data.report_code === data.procedure_data.report_code;
       });
-
 
       if(ifReportExists !== undefined){
         throw new Error (`Prontuário ${data.procedure_data.report_code} já existente!`);
@@ -88,7 +87,9 @@ class DatabaseRepository {
             (patient_id, last_name, first_name, age, city, sex, birthdate, cpf, mother_name, relative_name, relative_first_name, familiar_stand, phone)
             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);`, patient_values);
       } else {
-          data.personal_data.patient_id = ifPatientExists.patient_id;
+          data.personal_data.patient_id = ifPatientExists.personal_data.patient_id;
+          console.log('Chegou aqui!!!')
+          console.log(data.personal_data);
       }
 
       if(ifDoctorExists === undefined){
@@ -99,7 +100,7 @@ class DatabaseRepository {
             (doctor_id, doctor_name, doctor_first_name)
              VALUES (?, ?, ?);`, doctor_values);
       } else {
-          data.doctor_data.doctor_id = ifDoctorExists.doctor_id;
+          data.doctor_data.doctor_id = ifDoctorExists.doctor_data.doctor_id;
       }
 
       const {discharge_values, entry_values, report_values} = await reportDataExtraction(data as Report);
@@ -124,107 +125,52 @@ class DatabaseRepository {
       return this.getReportByCode(data.procedure_data.report_code);
   }
 
+  async updateReport(data: Report, id: string): Promise<any> {
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  async updateReport(data: any, id: string): Promise<Report> {
-
-    const foundData: any = await this.getReportById(id);
-
-    const patient_values = [
-      data.personal_data.last_name,
-      data.personal_data.first_name,
-      data.personal_data.age,
-      data.personal_data.city,
-      data.personal_data.sex,
-      data.personal_data.birthdate,
-      data.personal_data.cpf,
-      data.personal_data.mother_name,
-      data.personal_data.relative_name,
-      data.personal_data.relative_first_name,
-      data.personal_data.familiar_stand,
-      data.personal_data.phone,
-      foundData.patient_id
-    ];
-
-  
-    const updatedPatientData = await client.query(`UPDATE patient SET 
-    last_name=?, first_name=?, age=?, city=?, sex=?, birthdate=?, cpf=?, mother_name=?, relative_name=?, relative_first_name=?, familiar_stand=?, phone=? WHERE patient_id=?`, patient_values);
-
-
-    const entry_values = [
-      data.entry_data.entry_date,
-      data.entry_data.symptoms,
-      data.entry_data.previous_diagnosis,
-      data.entry_data.clinical_conditions,
-      data.entry_data.entry_note,
-      foundData.entry_id
-    ];
-  
-    const updatedEntryData = await client.query(`UPDATE entry SET 
-    entry_date=?, symptoms=?, previous_diagnosis=?, clinical_conditions=?, entry_note=? WHERE entry_id=?`, entry_values);
+    const foundData: Report = await this.getReportById(id);
+    
+    const patient_values: any = await personalDataExtraction(data as Report);
+    const doctor_values = await doctorDataExtraction(data as Report);
+    const {entry_values, discharge_values, report_values} = await reportDataExtraction(data as Report);
 
     
-    const discharge_values = [
-      data.discharge_data.discharge_date,
-      data.discharge_data.discharge_cause,
-      data.discharge_data.discharge_note,
-      foundData.discharge_id
-    ];
+    patient_values.shift();
+    patient_values.push(foundData.personal_data.patient_id);
+    report_values.shift();
+    for (let i = 1; i <= 4; i++){
+      report_values.pop()
+    }
+    report_values.push(foundData.procedure_data.procedure_id);
+    doctor_values.shift();
+    doctor_values.push(foundData.doctor_data.doctor_id);
+    entry_values.shift();
+    entry_values.push(foundData.entry_data.entry_id);
+    discharge_values.shift();
+    discharge_values.push(foundData.discharge_data.discharge_id);
+    
+    const updatedPatientData = await client.query(`UPDATE patient SET 
+    last_name=?, first_name=?, age=?, city=?, sex=?, birthdate=?, cpf=?, mother_name=?, relative_name=?, relative_first_name=?, familiar_stand=?, phone=? WHERE patient_id=?;`, patient_values);
+
+    const updatedDoctorData = await client.query(`UPDATE doctor SET 
+      doctor_name=?, doctor_first_name=? WHERE doctor_id=?`, doctor_values);
+
+    const updatedEntryData = await client.query(`UPDATE entry SET 
+    entry_date=?, symptoms=?, previous_diagnosis=?, clinical_conditions=?, entry_note=? WHERE entry_id=?;`, entry_values);
 
     const updatedDischargeData = await client.query(`UPDATE discharge SET 
-      discharge_date=?, discharge_cause=?, discharge_note=? WHERE discharge_id=?`, discharge_values);
-
-    const doctor_values = [
-      data.doctor_data.doctor_name,
-      data.doctor_data.doctor_first_name,
-      foundData.doctor_id
-    ];
-  
-      const updatedDoctorData = await client.query(`UPDATE doctor SET 
-        doctor_name=?, doctor_first_name=? WHERE doctor_id=?`, doctor_values);
-
-    const report_values = [
-      data.procedure_data.report_code,
-      data.procedure_data.procedure_name,
-      data.procedure_data.bed,
-      data.procedure_data.procedure_status,
-      data.procedure_data.procedure_date,
-      data.procedure_data.report_note,
-      foundData.patient_id,
-      foundData.doctor_id,
-      foundData.entry_id, 
-      foundData.discharge_id,
-      foundData.procedure_id
-    ];
+      discharge_date=?, discharge_cause=?, discharge_note=? WHERE discharge_id=?;`, discharge_values);
 
     const updatedReportData = await client.query(`UPDATE reports SET 
-      report_code=?, procedure_name=?, bed=?, procedure_status=?, procedure_date=?, report_note=?, patient_id=?, doctor_id=?, entry_id=?, discharge_id=? WHERE procedure_id=?`, report_values);
-   
+      report_code=?, procedure_name=?, bed=?, procedure_status=?, procedure_date=?, report_note=? WHERE procedure_id=?;`, report_values);
+
+    const updatedReport: any = {updatedReportData, updatedPatientData, updatedDoctorData, updatedEntryData, updatedDischargeData}
 
     return await this.getReportByCode(data.procedure_data.report_code);
   }
 
   async deleteReport(id: string): Promise<string> {
-
       const foundData: Report = await this.getReportById(id);
-
       await client.query(`DELETE FROM reports WHERE procedure_id = ?`, id);
-
       return `Registro deletado`;
   }
 }

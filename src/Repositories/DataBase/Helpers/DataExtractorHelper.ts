@@ -67,3 +67,5 @@ export function doctorDataExtraction(data: Report){
 
     return doctor_values;
 }
+
+

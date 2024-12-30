@@ -47,10 +47,7 @@ class ReportController {
     const id: string = req.params.id;
     try {
       await reportDataSchema.validate(data);
-      const updatedReport: Report | string = await reportService.updateReport(
-        data,
-        id
-      );
+      const updatedReport: Report | string = await reportService.updateReport(data, id);
       res.status(200).json(updatedReport);
     } catch (error: any) {
       res.status(400).json({ error: error.message });
