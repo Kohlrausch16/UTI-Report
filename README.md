@@ -1,4 +1,4 @@
-# EM DESENVOLVIMENTO - UTI-Report
+# UTI-Report
 
 A UTI-Report consiste em API destinada para o gerenciamento de prontuários de pacientes em UTI.
 
@@ -32,8 +32,9 @@ Documento PDF gerado com os dados do prontuário em memória:
 
 Etapa de implementação de um microgerenciador de acessos.
 
-Para esta etapa, foram desenvolvidas duas rotas destinadas para a criação e exclusão de registros.
-Com isto, foi desenvolvido um sistema de autenticação de usuários onde as credencias de entrada (email e senha) são verificadas na base de dados mysql e, caso compativeis com um usuário cadastrado, retornam um token (e refresh token) JWT de acesso. A etapa também abrange conceitos como criptografia de senhas por meio da biblioteca bcrypt.
+Para esta etapa, o projeto conta com rotas destinadas para a criação de usuários e roles, os quais podem ser criados de maneira livre, onde cada role de usuário pode ter suas permissões de acesso criadas livremente.
+
+Com isto, os de autenticação e autorização desenvolvidos realizam os controles de acesso (validação das credenciais do usuário) e permissões (o usuario pode acessar a referida rota?).
 
 Geração de um JWT após localização das credenciais na base de dados:
 ![Captura de Tela (82)](https://github.com/user-attachments/assets/73dd1429-dfdd-4f6d-816b-b9d43fb96f70)
